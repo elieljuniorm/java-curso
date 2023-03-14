@@ -6,6 +6,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,7 +20,7 @@ public class SellerDaoJDBC implements SellerDao {
   // dependencia para ser acessado em todo o SellerDaoJDBC
   private Connection conn;
 
-  public SellerDaoJDBC(Connection conn) {
+  public SellerDaoJDBC(Connection conn) { //conecta uma vez só e é utilizado em todo o código
     this.conn = conn;
   }
 
@@ -27,23 +28,85 @@ public class SellerDaoJDBC implements SellerDao {
 
   @Override
   public void insert(Seller obj) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'insert'");
+    PreparedStatement st = null; //instancia
+    try {
+      st =
+        conn.prepareStatement(
+          "INSERT INTO seller " +
+          "(Name, Email, BirthDate, BaseSalary, DepartmentId) " +
+          "VALUES " +
+          "(?, ?, ?, ?, ?)",
+          Statement.RETURN_GENERATED_KEYS //recebe a resposta do banco em foma de key
+        );
+
+      st.setString(1, obj.getName());
+      st.setString(2, obj.getEmail());
+      st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+      st.setDouble(4, obj.getBaseSalary());
+      st.setInt(5, obj.getDepartment().getId());
+
+      int rowsAffected = st.executeUpdate();
+
+      if (rowsAffected > 0) { //verifica se a linha foi afetada para receber o dado do banco
+        ResultSet rs = st.getGeneratedKeys();
+        if (rs.next()) { //armazena  o id do novo dado e armazena na variavel obj
+          int id = rs.getInt(1);
+          obj.setId(id);
+        }
+        DB.fecharResultado(rs); //fecha o recurso
+      } else {
+        throw new DbException("Erro inesperado, nenhuma linha foi afetada");
+      }
+    } catch (SQLException e) {
+      throw new DbException(e.getMessage());
+    } finally {
+      DB.fecharConsulta(st); //fecha recurso
+    }
   }
 
   @Override
-  public void update(Seller obj) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'update'");
-  }
+	public void update(Seller obj) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement(
+					"UPDATE seller "
+					+ "SET Name = ?, Email = ?, BirthDate = ?, BaseSalary = ?, DepartmentId = ? "
+					+ "WHERE Id = ?");
+			
+			st.setString(1, obj.getName());
+			st.setString(2, obj.getEmail());
+			st.setDate(3, new java.sql.Date(obj.getBirthDate().getTime()));
+			st.setDouble(4, obj.getBaseSalary());
+			st.setInt(5, obj.getDepartment().getId());
+			st.setInt(6, obj.getId());
+			
+			st.executeUpdate();
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.fecharConsulta(st);
+		}
+	}
 
-  @Override
-  public void deleteById(Integer id) {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException(
-      "Unimplemented method 'deleteById'"
-    );
-  }
+	@Override
+	public void deleteById(Integer id) {
+		PreparedStatement st = null;
+		try {
+			st = conn.prepareStatement("DELETE FROM seller WHERE Id = ?");
+			
+			st.setInt(1, id);
+			
+			st.executeUpdate();
+		}
+		catch (SQLException e) {
+			throw new DbException(e.getMessage());
+		}
+		finally {
+			DB.fecharConsulta(st);
+		}
+	}
 
   @Override
   public Seller findById(Integer id) {
