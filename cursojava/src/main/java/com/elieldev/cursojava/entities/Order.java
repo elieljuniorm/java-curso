@@ -1,5 +1,6 @@
 package com.elieldev.cursojava.entities;
 
+import com.elieldev.cursojava.entities.enums.OrderStatus;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -27,6 +28,8 @@ public class Order implements Serializable {
     timezone = "GMT"
   ) //formatação da hora em formato json para resposta da requisição HTTP
   private Instant moment; //variavel para salvar uma data formato iso8601
+
+  private Integer orderStatus;
 
   @ManyToOne
   @JoinColumn(name = "client_id") //anotaçoes do spring para resolver a questao de informações entre classes, associação muitos(Order) para um(User)
@@ -76,9 +79,20 @@ public class Order implements Serializable {
     this.client = client;
   }
 
-  public Order(Long id, Instant moment, User client) {
+  public OrderStatus getOrderStatus() {
+    return OrderStatus.valueOf(orderStatus); //pega o numero interno da classe e converte para order status
+  }
+
+  public void setOrderStatus(OrderStatus orderStatus) {
+    if (orderStatus != null) { //testa se o valor nao é null caso tenha passado um valor nao existente
+      this.orderStatus = orderStatus.getCode(); //recebe o valor do get do enum
+    }
+  }
+
+  public Order(Long id, Instant moment, OrderStatus orderStatus, User client) {
     this.id = id;
     this.moment = moment;
+    setOrderStatus(orderStatus); //chama o set do enum para passar o valor
     this.client = client;
   }
 
