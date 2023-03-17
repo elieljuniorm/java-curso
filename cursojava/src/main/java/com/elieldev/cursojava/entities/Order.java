@@ -1,5 +1,6 @@
 package com.elieldev.cursojava.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -20,6 +21,11 @@ public class Order implements Serializable {
   @GeneratedValue(strategy = GenerationType.IDENTITY) //gera o numero automatico de id no banco
   private Long id;
 
+  @JsonFormat(
+    shape = JsonFormat.Shape.STRING,
+    pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'",
+    timezone = "GMT"
+  ) //formatação da hora em formato json para resposta da requisição HTTP
   private Instant moment; //variavel para salvar uma data formato iso8601
 
   @ManyToOne

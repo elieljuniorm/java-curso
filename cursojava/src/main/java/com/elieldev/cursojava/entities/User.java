@@ -1,5 +1,6 @@
 package com.elieldev.cursojava.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +26,7 @@ public class User implements Serializable {
   private String phone;
   private String password;
 
+  @JsonIgnore //anotação para retiar um loop infinito de repetição de associação(evita erro)
   @OneToMany(mappedBy = "client") //anotaçoes do spring para resolver a questao de informações entre classes, associação um(User) para muitos(Order)
   private List<Order> orders = new ArrayList<>();
 
