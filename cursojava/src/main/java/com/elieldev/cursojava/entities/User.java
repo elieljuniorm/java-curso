@@ -4,8 +4,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "tb_user") //modifica o nome da tabela no banco para nao ter conflito, User é palavra reservada no banco
@@ -21,6 +24,9 @@ public class User implements Serializable {
   private String email;
   private String phone;
   private String password;
+
+  @OneToMany(mappedBy = "client") //anotaçoes do spring para resolver a questao de informações entre classes, associação um(User) para muitos(Order)
+  private List<Order> orders = new ArrayList<>();
 
   @Override
   public int hashCode() {
@@ -80,6 +86,10 @@ public class User implements Serializable {
 
   public void setPassword(String password) {
     this.password = password;
+  }
+
+  public List<Order> getOrders() {
+    return orders;
   }
 
   public User() {}
