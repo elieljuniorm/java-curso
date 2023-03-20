@@ -1,5 +1,0 @@
-@Service // registra como uma classe de serviço, classe que ira entregar resposta entre as camadas de Controller e data repositorys
-public List<Category> findAll() // retorna todos os dados do banco de category
-public Category findById(Long id)  // retorna o usuario por id
-
-O service existe para fazer a comunicação do banco com a camada de requisição http, no service que configuramos os metodos e buscamos os dados
