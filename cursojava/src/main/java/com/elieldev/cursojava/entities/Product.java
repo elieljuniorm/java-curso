@@ -12,8 +12,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tb_category")
-public class Category implements Serializable {
+@Table(name = "tb_product")
+public class Product implements Serializable {
 
   private static final long serialVersionUID = 1L; //numero de série padrão(opcional)
 
@@ -22,9 +22,12 @@ public class Category implements Serializable {
   private Long id;
 
   private String name;
+  private String description;
+  private Double price;
+  private String imgUrl;
 
   @Transient //provisorio somente para o JPA nao interpertar e deixar passar
-  private Set<Product> products = new HashSet<>(); //associação entre a categoria e o produto
+  private Set<Category> categories = new HashSet<>(); //associação entre a categoria e o produto
 
   @Override
   public int hashCode() {
@@ -39,7 +42,7 @@ public class Category implements Serializable {
     if (this == obj) return true;
     if (obj == null) return false;
     if (getClass() != obj.getClass()) return false;
-    Category other = (Category) obj;
+    Product other = (Product) obj;
     if (id == null) {
       if (other.id != null) return false;
     } else if (!id.equals(other.id)) return false;
@@ -62,14 +65,49 @@ public class Category implements Serializable {
     this.name = name;
   }
 
-  public Set<Product> getProducts() {
-    return products;
+  public String getDescription() {
+    return description;
   }
 
-  public Category() {}
+  public void setDescription(String description) {
+    this.description = description;
+  }
 
-  public Category(Long id, String name) {
+  public Double getPrice() {
+    return price;
+  }
+
+  public void setPrice(Double price) {
+    this.price = price;
+  }
+
+  public String getImgUrl() {
+    return imgUrl;
+  }
+
+  public void setImgUrl(String imgUrl) {
+    this.imgUrl = imgUrl;
+  }
+
+  public Set<Category> getCategories() {
+    return categories;
+  }
+
+  public Product() {}
+
+  public Product(
+    Long id,
+    String name,
+    String description,
+    Double price,
+    String imgUrl,
+    Set<Category> categories
+  ) {
     this.id = id;
     this.name = name;
+    this.description = description;
+    this.price = price;
+    this.imgUrl = imgUrl;
+    this.categories = categories;
   }
 }
