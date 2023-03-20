@@ -1,0 +1,1 @@
+camada do tipo enumerado, firmando que os status do pedido sejam sempre os listados na camada, contem uma logica grande para evitar criação de novos enum fora de ordem e modificando assim o ID automatico, portanto foi modificado o numero dos ID de cada enum, sendo passados peloa programador o numero em vez de mandar ele automatico.

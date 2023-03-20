@@ -1,0 +1,3 @@
+Repository(Repositório) é um padrão de projeto que visa mediar a pesquisa de objetos de dominio entre a camada de dominio e a camada de mapeamento de dados usando uma interface semelhante à de uma coleção. Para a camada de dominio parece que estamos filtrando uma coleção em memoria.
+
+ela faz o meio de campo para que a camada de dominio que pesquisa o objeto nao tenha acesso direto a camada de mapeamento, mantendo uma segurança e indeopendencia no codigo

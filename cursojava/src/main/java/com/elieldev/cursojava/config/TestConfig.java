@@ -1,8 +1,10 @@
 package com.elieldev.cursojava.config;
 
+import com.elieldev.cursojava.entities.Category;
 import com.elieldev.cursojava.entities.Order;
 import com.elieldev.cursojava.entities.User;
 import com.elieldev.cursojava.entities.enums.OrderStatus;
+import com.elieldev.cursojava.repositories.CategoryRepositorys;
 import com.elieldev.cursojava.repositories.OrderRepositorys;
 import com.elieldev.cursojava.repositories.UserRepositorys;
 import java.time.Instant;
@@ -22,8 +24,21 @@ public class TestConfig implements CommandLineRunner {
   @Autowired
   private OrderRepositorys orderRepositorys;
 
+  @Autowired
+  private CategoryRepositorys categoryRepositorys;
+
   @Override
   public void run(String... args) throws Exception { //metodo que instancia os dados no banco assim que inicia a aplicação
+    //categoria
+
+    Category cat1 = new Category(null, "Electronics");
+    Category cat2 = new Category(null, "Books");
+    Category cat3 = new Category(null, "Computers");
+
+    categoryRepositorys.saveAll(Arrays.asList(cat1, cat2, cat3));
+
+    // usuario
+
     User u1 = new User(
       null,
       "Maria Brown",
@@ -39,6 +54,8 @@ public class TestConfig implements CommandLineRunner {
       "977777777",
       "123456"
     );
+
+    //pedido
 
     Order o1 = new Order(
       null,

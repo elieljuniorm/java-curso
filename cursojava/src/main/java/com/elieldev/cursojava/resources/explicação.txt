@@ -1,0 +1,6 @@
+@RestController //controladores que comunicam com o front por http(get,put,delete,post, ...)
+@GetMapping //endpoint get padrao
+public ResponseEntity<List<Order>> findAll()  //endpoint para buscar todos os dados de order
+return ResponseEntity.ok().body(obj); //entrega a resposta via body http
+
+A camada Resource é responsavel pelos endpoint das requisições http, com essa camada que o front comunica para o back qual dado ele vai enviar e receber
