@@ -10,19 +10,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/cargos")
+@RequestMapping("/cargos") //caminho pricipal
 public class CargoControle {
 
   @Autowired
   private CargoRepositorio cargo_repositorio;
 
-  @GetMapping("/listar")
-  public Iterable<Cargo> listar() {
+  @GetMapping("/listar") //sub caminho /cargos/listar
+  public Iterable<Cargo> listar() { //lista dos os cargos
     return cargo_repositorio.findAll();
   }
 
   @PostMapping("/cadastrar")
-  public Cargo cadastrar(@RequestBody Cargo obj) {
+  public Cargo cadastrar(@RequestBody Cargo obj) { //cadastra um cargo
     return cargo_repositorio.save(obj);
   }
 }
